@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "name": "@hypercontext/ai",
   "scripts": {
     "build": "turbo build",
     "changeset": "changeset",
