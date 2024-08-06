@@ -1,4 +1,4 @@
-import { isAbortError } from '@ai-sdk/provider-utils';
+import { isAbortError } from '../../provider-utils/src';
 import {
   AssistantStatus,
   CreateMessage,
@@ -6,7 +6,7 @@ import {
   UseAssistantOptions,
   generateId,
   readDataStream,
-} from '@ai-sdk/ui-utils';
+} from '../../ui-utils/src';
 import { useCallback, useRef, useState } from 'react';
 
 // use function to allow for mocking in tests:
