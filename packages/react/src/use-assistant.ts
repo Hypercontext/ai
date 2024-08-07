@@ -1,4 +1,4 @@
-import { isAbortError } from '@ai-sdk/provider-utils';
+import { isAbortError } from '../../provider-utils/src';
 import {
   AssistantStatus,
   CreateMessage,
@@ -6,7 +6,7 @@ import {
   UseAssistantOptions,
   generateId,
   readDataStream,
-} from '@ai-sdk/ui-utils';
+} from '../../ui-utils/src';
 import { useCallback, useRef, useState } from 'react';
 
 // use function to allow for mocking in tests:
@@ -89,6 +89,13 @@ Abort the current request immediately, keep the generated tokens if any.
    * The error thrown during the assistant message processing, if any.
    */
   error: undefined | Error;
+
+  /**
+   * Added by Hypercontext for internal use
+   *
+   * An optional flag to retrieve metadata of each message
+   */
+  sendMessageMetadata?: boolean;
 };
 
 export function useAssistant({
@@ -99,6 +106,7 @@ export function useAssistant({
   body,
   onError,
   fetch,
+  sendMessageMetadata, // Added by Hypercontext for internal use
 }: UseAssistantOptions): UseAssistantHelpers {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -187,6 +195,7 @@ export function useAssistant({
                 id: value.id,
                 role: value.role,
                 content: value.content[0].text.value,
+                ...(sendMessageMetadata ? { metadata: value.metadata} : {}), // Added by Hypercontext for internal use
               },
             ]);
             break;
@@ -202,6 +211,7 @@ export function useAssistant({
                   id: lastMessage.id,
                   role: lastMessage.role,
                   content: lastMessage.content + value,
+                  metadata: lastMessage.metadata, // Added by Hypercontext for internal use
                 },
               ];
             });
@@ -285,6 +295,7 @@ export function useAssistant({
     setMessages,
     threadId: currentThreadId,
     setThreadId,
+    sendMessageMetadata, // Added by Hypercontext for internal use
     input,
     setInput,
     handleInputChange,

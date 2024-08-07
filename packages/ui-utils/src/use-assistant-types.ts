@@ -43,4 +43,11 @@ Custom fetch implementation. You can use it as a middleware to intercept request
 or to provide a custom fetch implementation for e.g. testing.
     */
   fetch?: FetchFunction;
+
+  /**
+   * Added by Hypercontext for internal use
+   *
+   * An optional flag to retrieve metadata of each message
+   */
+  sendMessageMetadata?: boolean;
 };
